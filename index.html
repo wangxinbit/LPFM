@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-World Spectral Compressive Imaging | LPFM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            min-height: 20vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            max-width: 1200px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-bottom: 0px;
+        }
+
+        .hero .authors {
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 20px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #555;
+            margin: 5px 0 5px;
+            font-size: 1.3rem;
+        }
+
+        .section p {
+            margin-bottom: 0px;
+            color: #555;
+        }
+
+        .abstract {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            font-style: italic;
+        }
+
+        .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .keyword {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+        }
+
+        .highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .highlight-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .highlight-card i {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .highlight-card h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .highlight-card p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .method-diagram {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .method-diagram img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .dataset-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 10px 0 0 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .contributors {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .contributor {
+            text-align: center;
+            padding: 15px;
+        }
+
+        .contributor .name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .contributor .affiliation {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .badge-ieee {
+            background: #00629b;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 25px;
+            }
+
+            .highlights {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .citation {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .affiliations {
+            font-size: 0.95rem;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .figure-container {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .figure-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .figure-container img:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+        }
+
+        .figure-container .caption {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #555;
+            font-style: italic;
+        }
+
+        /* For single-column (portrait) figures */
+        .figure-container.figure-narrow {
+            padding: 20px;
+            max-width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .figure-container.figure-narrow img {
+            max-width: 100%;
+        }
+
+        /* For figure with cards on the right */
+        .figure-container.figure-narrow-with-cards {
+            padding: 15px;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .figure-narrow-with-cards .figure-left {
+            flex: 0 0 45%;
+        }
+
+        .figure-narrow-with-cards .figure-left img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        }
+
+        /* Specific width for concept image */
+        .concept-img {
+            max-width: 70% !important;
+        }
+
+        /* Specific style for figure-datasets */
+        #figure-datasets {
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .figure-narrow-with-cards .figure-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .figure-narrow-with-cards .caption {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #555;
+            font-style: italic;
+        }
+
+        /* Compact highlights cards */
+        .highlights-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .highlight-card-compact {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 10px 15px;
+            border-radius: 6px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            transition: transform 0.3s ease;
+        }
+
+        .highlight-card-compact:hover {
+            transform: translateX(5px);
+        }
+
+        .highlight-card-compact i {
+            font-size: 1.5rem;
+            color: #667eea;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .highlight-card-compact h4 {
+            color: #333;
+            margin-bottom: 3px;
+            font-size: 1rem;
+        }
+
+        .highlight-card-compact p {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        /* For full-width (landscape) figures */
+        .figure-container.figure-wide img {
+            max-width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .figure-container.figure-narrow {
+                max-width: 85%;
+                padding: 15px;
+            }
+
+            .figure-container.figure-narrow-with-cards {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .figure-narrow-with-cards .figure-left {
+                flex: 1;
+                width: 100%;
+            }
+
+            .figure-narrow-with-cards .figure-right {
+                width: 100%;
+            }
+
+            .highlight-card-compact {
+                padding: 12px 15px;
+            }
+        }
+
+        .figure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .figure-grid .figure-container {
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .figure-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Tab Container Styles */
+        .tab-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            overflow: visible;
+            position: relative;
+            margin: 0 40px;
+        }
+
+        .tab-nav-arrow {
+            position: absolute;
+            top: 230px;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #e9ecef;
+            cursor: pointer;
+            color: #667eea;
+            transition: all 0.3s ease;
+            z-index: 10;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tab-nav-arrow:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .tab-nav-arrow:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: #f8f9fa;
+            color: #999;
+        }
+
+        .tab-nav-arrow:disabled:hover {
+            background: #f8f9fa;
+            color: #999;
+            transform: none;
+        }.tab-nav-arrow#tab-prev {
+            left: -100px;
+        }
+
+        .tab-nav-arrow#tab-next {
+            right: -100px;
+        }
+
+        .tab-nav-arrow i {
+            font-size: 2rem;
+        }
+
+        .tab-nav {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            align-items: center;
+        }
+
+        .tab-nav-buttons {
+            display: flex;
+            flex: 1;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .tab-nav-buttons::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-nav-buttons button {
+            flex: 1;
+            min-width: 140px;
+            padding: 18px 24px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .tab-nav-buttons button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-nav-buttons button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
+        }
+
+        .tab-nav-buttons button i {
+            font-size: 1.2rem;
+        }
+
+        .tab-content {
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tab-section {
+                margin: 0 60px;
+            }
+
+            .tab-nav-arrow {
+            top: 30px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .tab-nav-arrow:hover {
+            transform: scale(1.1);
+            }
+
+            .tab-nav-arrow#tab-prev {
+                left: -60px;
+            }
+
+            .tab-nav-arrow#tab-next {
+                right: -60px;
+            }
+
+            .tab-nav-arrow i {
+                font-size: 1.5rem;
+            }
+
+            .tab-nav-buttons button {
+                min-width: 100px;
+                padding: 14px 16px;
+                font-size: 0.9rem;
+            }
+
+            .tab-nav-buttons button i {
+                font-size: 1rem;
+            }
+
+            .tab-content {
+                padding: 15px;
+                margin-bottom: 25px;
+            }
+        }
+
+
+        /* Demo Video Styles */
+        .demo-video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        
+         /* .demo-video-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 24px;
+        } */
+
+        .demo-video-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .demo-video-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .demo-video-card video {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .demo-video-card p {
+            margin-top: 12px;
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .demo-about-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .demo-about-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .demo-about-section p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Problem Statement Styles */
+        .problem-section {
+            margin-bottom: 5px;
+        }
+
+        .problem-section p:first-child {
+            margin: 0 0 0px 0;
+        }
+
+        .problem-title {
+            font-size: 1.05rem;
+            color: #667eea;
+        }
+
+        .problem-content {
+            margin: 0;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .demo-video-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .demo-video-card-inner {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .demo-video-title {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .demo-video-player {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .demo-video-caption {
+            margin-top: 12px;
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Real-World Spectral Compressive Imaging by Learning a</h1>
+        <h1> Physics-Informed Forward Model</h1>
+        <!-- <p>A data-driven approach to bridge the simulation-to-reality gap in CASSI systems</p> -->
+        <div class="authors">
+        </div>
+        <div class="btn-group">
+            <a href="#paper" class="btn btn-primary"><i class="fas fa-file-pdf"></i> Paper</a>
+            <a href="#code" class="btn btn-primary"><i class="fab fa-github"></i> Code & Dataset</a>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+
+
+        <!-- Tab Container for Main Content -->
+        <div class="tab-section">
+            <button class="tab-nav-arrow" id="tab-prev" disabled>
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="tab-nav">
+                <div class="tab-nav-buttons">
+                    <button class="tab-btn active" data-tab="concept" data-index="0">
+                        <i class="fas fa-rocket"></i>
+                        <span>Overview</span>
+                    </button>
+                    <button class="tab-btn" data-tab="Demo" data-index="1">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Demo</span>
+                    </button>
+                    <button class="tab-btn" data-tab="acquisition" data-index="2">
+                        <i class="fas fa-camera"></i>
+                        <span>Acquisition</span>
+                    </button>
+                    <button class="tab-btn" data-tab="dataset2" data-index="3">
+                        <i class="fas fa-database"></i>
+                        <span>Dataset</span>
+                    </button>
+                    <!-- <button class="tab-btn" data-tab="LPFM" data-index="3">
+                        <i class="fas fa-brain"></i>
+                        <span>LPFM</span>
+                    </button>
+                    
+                    <button class="tab-btn" data-tab="Benchmark" data-index="4">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Benchmark</span>
+                    </button> -->
+
+
+
+  
+                </div>
+            </div>
+            
+            
+
+
+            <button class="tab-nav-arrow" id="tab-next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <div class="tab-content">
+                <!-- Problem Tab -->
+                <div class="tab-pane active" id="concept">
+                    <h2>The Simulation-to-Reality Gap in CASSI</h2>
+                    <div class="problem-section">
+                        <p><strong class="problem-title">The Problem</strong></p>
+                        <p class="problem-content">
+                        Deep learning-based CASSI reconstruction methods achieve remarkable results on simulated datasets, but their performance often degrades significantly when deployed on real CASSI systems.
+                        </p>
+                    </div>
+
+                    <div class="problem-section">
+                        <p><strong class="problem-title">Root Cause</strong></p>
+                        <p class="problem-content">
+                        This simulation-to-reality gap primarily arises from forward model mismatch. Existing methods rely on idealized forward models to synthesize training data, which fail to capture the complex imaging process of real CASSI systems. As a result, the learned reconstruction mapping becomes misaligned with the actual image formation process.
+                        </p>
+                    </div>
+
+                    <div class="problem-section">
+                        <p><strong class="problem-title">Our Solution</strong></p>
+                        <p class="problem-content">
+                        We propose a paradigm shift from explicit analytical modeling to a data-driven forward model. By learning a physics-informed proxy network directly from real HSI–CASSI pairs, our approach models the real imaging process and enables the generation of more realistic training data for reconstruction networks.
+                        </p>
+                    </div>
+
+                    <div class="figure-container figure-narrow-with-cards" style="
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            ">
+                        <div class="figure-left">
+                            <h3>Key Concept</h3>
+                            <img src="imgs/concept.png" alt="Conceptual overview of the simulation-to-reality gap" class="concept-img">
+                            <div class="caption"><strong>Figure 1:</strong> Learnable forward model for real-world CASSI reconstruction, trained on real HSI–CASSI pairs to improve reconstruction performance.</div>
+                        </div>
+                        <div class="figure-right">
+                            <h3>Key Contributions</h3>
+                            <div class="highlights-compact">
+                                <div class="highlight-card-compact">
+                                    <i class="fas fa-database"></i>
+                                    <div>
+                                        <h4>rSCI Dataset</h4>
+                                        <p>
+                                        The <strong>first real-world paired dataset</strong> for spectral compressive imaging. It contains 219 HSI–CASSI pairs captured under diverse indoor and outdoor scenes with varying illumination conditions.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="highlight-card-compact">
+                                    <i class="fas fa-brain"></i>
+                                    <div>
+                                        <h4>LPFM Model</h4>
+                                        <p>
+                                        A <strong>learnable physics-informed forward model</strong> trained on real HSI–CASSI pairs. LPFM integrates CASSI structural priors to capture complex real-world degradations while preserving physical consistency.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="highlight-card-compact">
+                                    <i class="fas fa-chart-line"></i>
+                                    <div>
+                                        <h4>Real-World Benchmark</h4>
+                                        <p>
+                                        The <strong>first real-world benchmark</strong> for CASSI reconstruction. Experiments show that incorporating LPFM-generated synthetic data consistently improves reconstruction performance across multiple representative methods.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Acquisition Tab -->
+                <div class="tab-pane" id="acquisition">
+                    <h2>Paired Dataset Acquisition System</h2>
+                    <p>Our dual-branch acquisition platform features:</p>
+                    <ul class="feature-list">
+                        <li><strong>Compressive branch:</strong> CASSI sensor + PAN sensor (Just for alignment)</li>
+                        <li><strong>HSI branch:</strong> GaiaField-V10E line-scanning HSI camera </li>
+                    </ul>
+
+                    <div class="figure-grid">
+                        <div class="figure-container">
+                            <img src="imgs/device6a.png" alt="Dual-branch acquisition platform">
+                            <div class="caption"><strong>Figure 2a:</strong> Overview of the dual-branch acquisition platform.</div>
+                        </div>
+                        <div class="figure-container">
+                            <img src="imgs/device6b.png" alt="CASSI optical system">
+                            <div class="caption"><strong>Figure 2b:</strong> Detailed view of the CASSI optical system.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dataset Tab -->
+                <div class="tab-pane" id="dataset2">
+                    <h2>rSCI: Real-World Paired Dataset for CASSI</h2>
+                    <p>The dataset covers diverse illumination conditions (sunlight, LED, halogen) and scene categories (posters, textiles, toys, outdoor scenes).</p>
+                    <div class="dataset-stats">
+                        <div class="stat-card">
+                            <div class="number">219</div>
+                            <div class="label">Paired Samples</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">896×1200</div>
+                            <div class="label">Spatial Resolution</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">30</div>
+                            <div class="label">Spectral Bands</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">450-750</div>
+                            <div class="label">Wavelength (nm)</div>
+                        </div>
+                    </div>
+                    <div class="figure-container figure-wide" id="figure-datasets">
+                        <img src="imgs/datasets8.png" alt="Dataset visualization">
+                        <div class="caption"><strong>Figure 3:</strong> Overview of the rSCI dataset. (a) Examples of paired HSI--CASSI data with zoomed regions for comparison. (b) Visualization of hyperspectral cubes demonstrating spatial and spectral diversity. (c) Distribution of scene categories. (d) Distribution of illumination conditions across the dataset.</div>
+                    </div>
+                </div>
+
+                <!-- LPFM Tab -->
+                <div class="tab-pane" id="LPFM">
+                    <h2>LPFM: Physics-Informed Forward Model</h2>
+                    <p>LPFM combines data-driven learning with physical structure priors to model the real CASSI imaging process.</p>
+
+                    <div class="figure-container figure-wide">
+                        <img src="imgs/LPFM1.png" alt="LPFM architecture">
+                        <div class="caption"><strong>Figure 4:</strong> Architecture of the LPFM forward model.</div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="Benchmark">
+                    <h2>LPFM: Physics-Informed Forward Model</h2>
+                    <p>LPFM combines data-driven learning with physical structure priors to model the real CASSI imaging process.</p>
+
+                    <div class="figure-container figure-wide">
+                        <img src="imgs/benchmark.png" alt="LPFM architecture">
+                        <div class="caption"><strong>Figure 4:</strong> Architecture of the LPFM forward model.</div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="Demo">
+                    <h2>Real-World Reconstruction Demo</h2>
+                    <p>Visualization of CASSI reconstruction results on real-world video.</p>
+                    <div class="demo-video-grid">
+                        
+
+                        <div class="demo-video-wrapper">
+                            <div class="demo-video-card-inner">
+                                <h3 class="demo-video-title">Toy car  </h3>
+                                <video
+                                    src="video/toycar.mp4"
+                                    controls
+                                    width="100%"
+                                    class="demo-video-player">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <p class="demo-video-caption">
+                                    <strong>Scene:</strong> Toy car  | <strong>Network:</strong> SSR-5stg | <strong>Training Strategy:</strong> R + LPFM<br>
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <div class="demo-video-wrapper">
+                            <div class="demo-video-card-inner">
+                                <h3 class="demo-video-title">Roly-poly toy   </h3>
+                                <video
+                                    src="video/rolypoly_toy.mp4"
+                                    controls
+                                    width="100%"
+                                    class="demo-video-player">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <p class="demo-video-caption">
+                                    <strong>Scene:</strong> Roly-poly toy   | <strong>Network:</strong> SSR-5stg | <strong>Training Strategy:</strong> R + LPFM<br>
+                                </p>
+                            </div>
+                        </div>
+
+                       
+
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Tab switching functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                const tabButtons = document.querySelectorAll('.tab-btn');
+                const tabPanes = document.querySelectorAll('.tab-pane');
+                const prevButton = document.getElementById('tab-prev');
+                const nextButton = document.getElementById('tab-next');
+                let currentIndex = 0;
+                const totalTabs = tabButtons.length;
+
+                function updateActiveTab(index) {
+                    // Remove active class from all buttons and panes
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+
+                    // Add active class to target button and pane
+                    tabButtons[index].classList.add('active');
+                    const targetTab = tabButtons[index].getAttribute('data-tab');
+                    document.getElementById(targetTab).classList.add('active');
+
+                    // Update arrow buttons state
+                    prevButton.disabled = index === 0;
+                    nextButton.disabled = index === totalTabs - 1;
+
+                    currentIndex = index;
+                }
+
+                // Tab button click handlers
+                tabButtons.forEach((button, index) => {
+                    button.addEventListener('click', function() {
+                        updateActiveTab(index);
+                    });
+                });
+
+                // Previous button click handler
+                prevButton.addEventListener('click', function() {
+                    if (currentIndex > 0) {
+                        updateActiveTab(currentIndex - 1);
+                    }
+                });
+
+                // Next button click handler
+                nextButton.addEventListener('click', function() {
+                    if (currentIndex < totalTabs - 1) {
+                        updateActiveTab(currentIndex + 1);
+                    }
+                });
+
+                // Keyboard navigation
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                        updateActiveTab(currentIndex - 1);
+                    } else if (e.key === 'ArrowRight' && currentIndex < totalTabs - 1) {
+                        updateActiveTab(currentIndex + 1);
+                    }
+                });
+            });
+        </script>
+
+
+        <div class="section" style="margin: 0 40px 20px 40px;">
+            <h2>Affiliations</h2>
+            <div class="affiliations">
+                <p><strong>Beijing Institute of Technology</strong> - Beijing, China</p>
+                <p><strong>Beijing Normal University</strong> - Beijing, China</p>
+                <p><strong>Korea Advanced Institute of Science and Technology (KAIST)</strong> - Daejeon, South Korea</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 LPFM Project. All rights reserved.</p>
+        <p>For questions, please contact the corresponding author: Lizhi Wang (wanglizhi@bnu.edu.cn)</p>
+        <!-- <p style="margin-top: 15px;">
+            <a href="https://github.com/yourusername/piform" target="_blank"><i class="fab fa-github"></i> GitHub</a> |
+            <a href="#" target="_blank"><i class="fas fa-file-pdf"></i> Paper</a> |
+            <a href="#" target="_blank"><i class="fas fa-database"></i> Dataset</a>
+        </p> -->
+    </footer>
+</body>
+</html>
